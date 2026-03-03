@@ -49,6 +49,7 @@ dependencies {
 // Functional and acceptance tests (Espresso)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
 
 // Unit and component tests (JUnit 5)
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
