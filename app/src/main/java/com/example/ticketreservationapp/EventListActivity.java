@@ -1,32 +1,45 @@
 package com.example.ticketreservationapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventListActivity extends AppCompatActivity {
 
-    private Button logoutButton;
+    private RecyclerView recyclerView;
+    private EventAdapter adapter;
+    private List<Event> eventList = new ArrayList<>();
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
-        logoutButton = findViewById(R.id.logoutButton);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new EventAdapter(eventList);
+        recyclerView.setAdapter(adapter);
 
-        logoutButton.setOnClickListener(v -> {
-            // Sign out of Firebase
-            FirebaseAuth.getInstance().signOut();
+        db = FirebaseFirestore.getInstance();
+        loadEvents();
+    }
 
-            // Return to the Login screen
-            Intent intent = new Intent(EventListActivity.this, LoginActivity.class);
-            // Clear the activity stack so the user can't press back to bypass the login screen
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
+    private void loadEvents() {
+        db.collection("events").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    eventList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Event event = doc.toObject(Event.class);
+                        eventList.add(event);
+                    }
+                    adapter.notifyDataSetChanged();
+                }).addOnFailureListener(e -> {
+                    e.printStackTrace();
+                });
     }
 }
