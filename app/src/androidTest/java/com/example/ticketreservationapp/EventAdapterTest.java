@@ -39,14 +39,13 @@ public class EventAdapterTest {
         adapter = new EventAdapter(events);
     }
 
-
     @Test
-    void getCount(){
+    public void getCount(){
         assertEquals(2, adapter.getItemCount());
     }
 
     @Test
-    void testEmptyList() {
+    public void testEmptyList() {
         EventAdapter emptyAdapter = new EventAdapter(Arrays.asList());
         assertEquals(0, emptyAdapter.getItemCount());
     }

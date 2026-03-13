@@ -2,6 +2,7 @@ package com.example.ticketreservationapp;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +17,12 @@ public class EventListActivityTest {
     @Rule
     public ActivityScenarioRule<EventListActivity> activityRule = new ActivityScenarioRule<>(EventListActivity.class);
 
+
     @Test
     public void recyclerViewIsDisplayed() {
+        activityRule.getScenario().onActivity(activity -> {
+            activity.getWindow().getDecorView().requestFocus();
+        });
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
     }
 }

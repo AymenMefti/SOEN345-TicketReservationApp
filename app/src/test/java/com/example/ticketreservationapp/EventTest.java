@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.*;
 import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
+
 public class EventTest {
 
     private Event event;
